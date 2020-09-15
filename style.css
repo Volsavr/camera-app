@@ -1,20 +1,4 @@
-html, body{
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  width: 100%;
-}
-#camera, #camera--view, #camera--sensor, #camera--output{
-    position: fixed;
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
-}
-#camera--view, #camera--sensor, #camera--output{
-    transform: scaleX(-1);
-    filter: FlipH;
-}
-#camera--trigger{
+#camera--swap--trigger{
     width: 200px;
     background-color: black;
     color: white;
@@ -25,8 +9,8 @@ html, body{
     text-align: center;
     box-shadow: 0 5px 10px 0 rgba(0,0,0,0.2);
     position: fixed;
-    bottom: 30px;
-    left: calc(50% - 100px);
+    top: 30px;
+    left: 30px;
 }
 .taken{
     height: 100px!important;

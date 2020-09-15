@@ -1,12 +1,17 @@
 // Set constraints for the video stream
-var constraints = { video: { facingMode: "environment" }, audio: false };
+var constraintsForUserCamera = { video: { facingMode: "user" }, audio: false };
+var constraintsForMainCamera = { video: { facingMode: "environment" }, audio: false };
+var isMainCameraActive = true;
+
 // Define constants
 const cameraView = document.querySelector("#camera--view"),
     cameraOutput = document.querySelector("#camera--output"),
     cameraSensor = document.querySelector("#camera--sensor"),
-    cameraTrigger = document.querySelector("#camera--trigger")
+    cameraTrigger = document.querySelector("#camera--trigger"),
+	cameraSwapTrigger = document.querySelector("#camera--swap--trigger")
+	
 // Access the device camera and stream to cameraView
-function cameraStart() {
+function cameraStart(constraints) {
     navigator.mediaDevices
         .getUserMedia(constraints)
         .then(function(stream) {
@@ -17,7 +22,12 @@ function cameraStart() {
         console.error("Oops. Something is broken.", error);
     });
 }
-// Take a picture when cameraTrigger is tapped
+
+function appLoad(){
+  cameraStart(constraintsForMainCamera);
+}
+
+// Take a picture when button is tapped
 cameraTrigger.onclick = function() {
     cameraSensor.width = cameraView.videoWidth;
     cameraSensor.height = cameraView.videoHeight;
@@ -25,5 +35,16 @@ cameraTrigger.onclick = function() {
     cameraOutput.src = cameraSensor.toDataURL("image/webp");
     cameraOutput.classList.add("taken");
 };
+
+// Swap camera a picture when cameraTrigger is tapped
+cameraSwapTrigger.onclick = function() {
+    if(isMainCameraActive)
+       cameraStart(constraintsForUserCamera);
+    else
+       cameraStart(constraintsForMainCamera);
+
+   isMainCameraActive = !isMainCameraActive;
+};
+
 // Start the video stream when the window loads
-window.addEventListener("load", cameraStart, false);
+window.addEventListener("load", appLoad, false);
